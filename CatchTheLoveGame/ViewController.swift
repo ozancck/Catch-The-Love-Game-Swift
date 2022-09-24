@@ -13,6 +13,7 @@ class ViewController: UIViewController {
     var timer = Timer()
     var counter = 0
     var loveTimer = Timer()
+    var highScore = 0
     
     var loveArray = [UIImageView]()
     
@@ -36,6 +37,18 @@ class ViewController: UIViewController {
         super.viewDidLoad()
          
         scoreLabel.text = "Score: \(score) "
+        
+        let storedHighScore = UserDefaults.standard.object(forKey: "highscore")
+        
+        if storedHighScore == nil {
+            highScore = 0
+            highscoreLabel.text = "Highscore: \(highScore)"
+        }
+        
+        if let newScore = storedHighScore as? Int{
+            highScore = newScore
+            highscoreLabel.text = "Highscore: \(highScore)"
+        }
         
         love1.isUserInteractionEnabled = true
         love2.isUserInteractionEnabled = true
@@ -112,6 +125,12 @@ class ViewController: UIViewController {
                 love.isHidden = true
             }
             
+            if self.score > self.highScore {
+                self.highScore = self.score
+                highscoreLabel.text = "Highscore: \(self.highScore)"
+                UserDefaults.standard.set(self.highScore, forKey: "highscore")
+            }
+            
             let alert = UIAlertController(title: "Time is up!", message: "Do you want to play again", preferredStyle: UIAlertController.Style.alert)
             
             let okButton = UIAlertAction(title: "OK", style: UIAlertAction.Style.cancel)
@@ -119,7 +138,7 @@ class ViewController: UIViewController {
             let replay = UIAlertAction(title: "Replay", style: UIAlertAction.Style.default) { UIAlertAction in
                 
                 self.score = 0
-                self.scoreLabel.text = String(self.score)
+                self.scoreLabel.text = "Score: \(self.score) "
                 
                 self.counter = 10
                 self.timeLabel.text = String (self.counter)
