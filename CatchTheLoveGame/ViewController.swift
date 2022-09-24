@@ -72,6 +72,7 @@ class ViewController: UIViewController {
         
         counter = 10
         timeLabel.text = String(counter)
+        
         timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(countDown), userInfo: nil, repeats: true)
         
         loveTimer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(hideLove), userInfo: nil, repeats: true)
@@ -116,6 +117,16 @@ class ViewController: UIViewController {
             let okButton = UIAlertAction(title: "OK", style: UIAlertAction.Style.cancel)
             
             let replay = UIAlertAction(title: "Replay", style: UIAlertAction.Style.default) { UIAlertAction in
+                
+                self.score = 0
+                self.scoreLabel.text = String(self.score)
+                
+                self.counter = 10
+                self.timeLabel.text = String (self.counter)
+                
+                self.timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.countDown), userInfo: nil, repeats: true)
+                
+                self.loveTimer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.hideLove), userInfo: nil, repeats: true)
                 
             }
             
