@@ -12,6 +12,9 @@ class ViewController: UIViewController {
     var score = 0
     var timer = Timer()
     var counter = 0
+    var loveTimer = Timer()
+    
+    var loveArray = [UIImageView]()
     
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var scoreLabel: UILabel!
@@ -64,10 +67,29 @@ class ViewController: UIViewController {
         love8.addGestureRecognizer(reongizer8)
         love9.addGestureRecognizer(reongizer9)
         
+        loveArray = [love1, love2, love3, love4, love5, love6, love7, love8, love9]
+        
         
         counter = 10
         timeLabel.text = String(counter)
         timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(countDown), userInfo: nil, repeats: true)
+        
+        loveTimer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(hideLove), userInfo: nil, repeats: true)
+        
+        hideLove()
+        
+        
+    }
+    
+    @objc func hideLove (){
+        
+        for love in loveArray {
+            love.isHidden = true
+        }
+        
+        
+        let random = Int(arc4random_uniform(UInt32(loveArray.count - 1)) )
+        loveArray[random].isHidden = false
         
     }
     
@@ -83,6 +105,12 @@ class ViewController: UIViewController {
         
         if counter == 0 {
             timer.invalidate()
+            loveTimer.invalidate()
+            
+            for love in loveArray {
+                love.isHidden = true
+            }
+            
             let alert = UIAlertController(title: "Time is up!", message: "Do you want to play again", preferredStyle: UIAlertController.Style.alert)
             
             let okButton = UIAlertAction(title: "OK", style: UIAlertAction.Style.cancel)
